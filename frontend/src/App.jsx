@@ -21,7 +21,7 @@ function App() {
       <h1>Welcome</h1>
       <p>Jokes: {Jokes.length}</p>
 
-      <p>Port Test : {import.meta.env.VITE_PORT}</p>
+      {/* <p>Port Test : {import.meta.env.VITE_PORT}</p> */}
       {
       Jokes.map((joke, index) => [
         <div key={joke.id}>
