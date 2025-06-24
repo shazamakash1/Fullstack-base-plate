@@ -7,7 +7,7 @@ dotenv.config({
   path: "../frontend/.env",
 });
 
-// app.use(express.static('dist'));
+app.use(express.static('dist'));
 
 // app.get("/", (req, res) => {
 //   res.send("Hello, World!");
