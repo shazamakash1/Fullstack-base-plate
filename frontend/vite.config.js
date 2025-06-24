@@ -1,21 +1,24 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-
-let backendUrl='';
-try {
-  backendUrl = `${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_PORT}`;
-} catch (error) {
-  backendUrl = 'https://fullstack-base-plate.onrender.com';
-}
-  
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vite.dev/config/
-export default defineConfig({
-  server: {
-    proxy:{
-      '/api': backendUrl, // Adjust the port if your backend server runs on a different port
+export default defineConfig(({ mode }) => {
+  // Load env variables based on the mode (development, production)
+  const env = loadEnv(mode, process.cwd(), '');
+
+  // Set the proxy target to your local backend server
+  const proxyTarget = `${env.VITE_BACKEND_URL || 'http://localhost'}:${env.VITE_PORT || 3000}`;
+
+  return {
+    server: {
+      proxy: {
+        // Proxy requests starting with /api to your backend
+        '/api': {
+          target: proxyTarget,
+          changeOrigin: true, // Necessary for virtual-hosted sites
+        },
+      },
     },
-  },
-  plugins: [react()],
-})
+    plugins: [react()],
+  };
+});
